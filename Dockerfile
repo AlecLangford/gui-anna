@@ -10,14 +10,9 @@ net-tools \
 xonsh
 RUN apt update \
 && apt install -y --no-install-recommends --allow-unauthenticated \
-xvfb x11vnc i3
-RUN apt update \
-&& apt install -y gpg-agent \
-&& curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-&& (dpkg -i ./google-chrome-stable_current_amd64.deb || apt-get install-fy) \
-&& curl -sSL https://dl.google.com/linux/linux_signing_key.pub |apt-key add \
-&& rm google-chrome-stable_current_amd64.deb \
-&& rm -rf /var/lib/apt/lists/*
+xvfb x11vnc i3 wget && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+    && apt-get update && apt-get -y install google-chrome-stable
 
 RUN mkdir /workspace
 VOLUME /workspace
